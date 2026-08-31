@@ -336,7 +336,7 @@ struct ThreadListPage {
       const threadWithReplyCount = new Set<string>()
       v.Variables.forum_threadlist.forEach(v => {
         if (viewedThread[v.tid]) {
-          const replies = parseInt(v.replies) + 1 // v.replies没有计入主楼，而数据库记录的回帖数把主楼计入了，需要+1来匹配
+          const replies = parseInt(v.replies)
           const newCount = replies - viewedThread[v.tid]
           const newCountStr = newCount.toString()
           if (!isNaN(newCount) && newCount >= 0) {

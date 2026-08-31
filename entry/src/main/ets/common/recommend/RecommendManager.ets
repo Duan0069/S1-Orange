@@ -254,15 +254,14 @@ class RecommendManager {
     if (item.viewedReply === undefined) {
       return true
     }
-    // 已看过且自上次查看以来无新增回帖（v.replies 未计入主楼，数据库记录计入了主楼，需要 +1 对齐）
-    return item.replies + 1 - item.viewedReply > 0
+    return item.replies - item.viewedReply > 0
   }
 
   private newReplyCount(item: RecommendExposureItem): number {
     if (item.viewedReply === undefined) {
       return item.replies
     }
-    return item.replies + 1 - item.viewedReply
+    return item.replies - item.viewedReply
   }
 
   private createBatch(pageKey: string, fid: string, items: RecommendExposureItem[]): void {
