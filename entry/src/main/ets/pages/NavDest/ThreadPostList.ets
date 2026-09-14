@@ -870,11 +870,16 @@ struct SinglePostPage {
   loadGuard: PageLoadGuard = new PageLoadGuard()
 
   visiblePageChanged() {
-    if (this.scroller && typeof this.scroller.getItemIndex == 'function' &&
-      typeof this.scroller.currentOffset == 'function') {
-      const index = this.scroller.getItemIndex(0, this.scroller.currentOffset?.().yOffset ?? 0)
-      this.recordViewHistory(index)
+    if (this.visiblePage != this.pageToLoad || typeof this.scroller.getItemIndex != 'function' ||
+      typeof this.scroller.currentOffset != 'function') {
+      return
     }
+    // 子页面被回收时 Scroller 尚未绑定 List，currentOffset() 会返回 undefined
+    const offset = this.scroller.currentOffset()
+    if (offset == undefined) {
+      return
+    }
+    this.recordViewHistory(this.scroller.getItemIndex(0, offset.yOffset ?? 0))
   }
 
   loadingBegin() {

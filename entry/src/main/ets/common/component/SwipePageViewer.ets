@@ -53,6 +53,8 @@ export struct SwipePageViewer {
 
   maxPageUpdate() {
     this.dataSource.setPageCount(this.maxPage)
+    // jumpToPage 可能早于 maxPage 到达（回帖数要等接口回传才知道），页数变大后补试一次未完成的跳转
+    this.requestJump()
   }
 
   requestJump() {
